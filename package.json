@@ -1,0 +1,19 @@
+{
+    "name": "plane-war",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "vite dev --base=./ --host",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.14",
+        "phaser": "^3.88.2",
+        "sharp": "^0.33.5",
+        "typescript": "^5.8.2",
+        "vite": "^4.5.10"
+    },
+    "dependencies": {
+        "vite-plugin-typescript": "^1.0.4"
+    }
+}
