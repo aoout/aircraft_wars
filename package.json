@@ -2,7 +2,7 @@
     "name": "plane-war",
     "version": "1.0.0",
     "scripts": {
-        "dev": "vite dev --base=./ --host",
+        "dev": "vite dev",
         "build": "vite build",
         "preview": "vite preview"
     },

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   publicDir: 'public',
-  base: '/games/aircraft_wars/',
+  base: '.',
 
   build: {
     outDir: 'dist',
