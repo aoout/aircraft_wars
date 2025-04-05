@@ -4,7 +4,8 @@ import { Emitter } from "./Emitter";
 import { Bullet } from "./Bullet";
 import { GameScene } from "../scenes/GameScene";
 
-export abstract class Enemy extends Emitter {
+export class Enemy extends Emitter {
+  name: string = "";
   type: string = "enemy";
 
   health: number = 1;

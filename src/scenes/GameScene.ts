@@ -19,9 +19,10 @@ export class GameScene extends Phaser.Scene {
   enemies: Enemy[] = [];
   enemies_bullets: Bullet[] = [];
   spawnTimer: number = 0;
-  spawnInterval: number = 2000;
-  baseSpawnInterval: number = 2000;
-  minSpawnInterval: number = 450;
+  pointsPerSecond: number = 1;
+  basePointsPerSecond: number = 1;
+  currentPoints: number = 0;
+  currentIntent: { constructor: typeof Enemy; cost: number } | null = null;
   gameTime: number = 0;
   score: number = 0;
   scoreText!: Phaser.GameObjects.Text;
@@ -43,9 +44,12 @@ export class GameScene extends Phaser.Scene {
     GameScene.gameOver = false;
     this.spawnTimer = 0;
     this.gameTime = 0;
-    this.spawnInterval = this.baseSpawnInterval;
     this.score = 0;
     this.lastEnemyPassTime = 0;
+    this.basePointsPerSecond = 1;
+    this.pointsPerSecond = this.basePointsPerSecond;
+    this.currentPoints = 0;
+    this.currentIntent = null;
 
     this.events.on("breakthrough", () => {
       this.lastEnemyPassTime = 0;
@@ -157,47 +161,57 @@ export class GameScene extends Phaser.Scene {
     this.enemies_bullets.slice().forEach((bullet) => bullet.update());
 
     this.gameTime += delta;
-    this.spawnInterval = Math.max(
-      this.minSpawnInterval,
-      this.baseSpawnInterval * Math.pow(0.95, Math.floor(this.gameTime / 10000))
-    );
+    // 根据游戏时间增加点数获取速率
+    this.pointsPerSecond = this.basePointsPerSecond * Math.pow(1.1, Math.floor(this.gameTime / 30000));
+    // 累积点数
+    this.currentPoints += (this.pointsPerSecond * delta) / 1000;
 
-    this.spawnTimer += delta;
-    if (this.spawnTimer >= this.spawnInterval) {
+    // 如果没有当前意图，生成新的意图
+    if (!this.currentIntent) {
+      this.generateIntent();
+    }
+    // 如果有意图且点数足够，生成敌机
+    else if (this.currentPoints >= this.currentIntent.cost) {
       this.spawnEnemy();
-      this.spawnTimer = 0;
+      this.currentPoints -= this.currentIntent.cost;
+      this.currentIntent = null;
     }
   }
 
-  private spawnEnemy(): void {
-    // 获取当前游戏画布的宽度
-    const width = this.cameras.main.width;
-    // 设置边距，防止敌机生成在屏幕边缘
-    const margin = width * 0.1;
-    // 根据屏幕宽度动态计算敌机生成位置
-    const x = Phaser.Math.Between(margin, width - margin);
-
+  private generateIntent(): void {
     const enemies = [
-      { constructor: Vanguard, weight: 8 },
-      { constructor: MeteorFighter, weight: 3 },
-      { constructor: ArcShooter, weight: 2 },
-      { constructor: BeamveilGuardian, weight: 3 },
-      { constructor: UpShooter, weight: 4 },
-      { constructor: AmmoCarrier, weight: 2 },
+      { constructor: Vanguard, weight: 8, cost: 1 },
+      { constructor: MeteorFighter, weight: 3, cost: 2 },
+      { constructor: ArcShooter, weight: 2, cost: 4 },
+      { constructor: BeamveilGuardian, weight: 3, cost: 3 },
+      { constructor: UpShooter, weight: 4, cost: 1 },
+      { constructor: AmmoCarrier, weight: 2, cost: 2 },
     ];
 
     const totalWeight = enemies.reduce((sum, enemy) => sum + enemy.weight, 0);
-
     const random = Phaser.Math.Between(0, totalWeight - 1);
     let weightSum = 0;
 
     for (const enemyType of enemies) {
       weightSum += enemyType.weight;
       if (random < weightSum) {
-        const enemy = new enemyType.constructor(this, x, 50);
-        this.enemies.push(enemy);
+        this.currentIntent = {
+          constructor: enemyType.constructor,
+          cost: enemyType.cost
+        };
         return;
       }
     }
+  }
+
+  private spawnEnemy(): void {
+    if (!this.currentIntent) return;
+
+    const width = this.cameras.main.width;
+    const margin = width * 0.1;
+    const x = Phaser.Math.Between(margin, width - margin);
+
+    const enemy = new this.currentIntent.constructor(this, x, 50,"enemy");
+    this.enemies.push(enemy);
   }
 }

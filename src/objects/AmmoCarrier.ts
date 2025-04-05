@@ -52,7 +52,7 @@ export class AmmoCarrier extends Enemy {
   update(): void {
     if (this.y > window.innerHeight) {
       const gameScene = this.scene as GameScene;
-      gameScene.spawnInterval = gameScene.spawnInterval * 0.98;
+      gameScene.basePointsPerSecond = gameScene.basePointsPerSecond + 0.2;
       this.remove();
     }
   }
