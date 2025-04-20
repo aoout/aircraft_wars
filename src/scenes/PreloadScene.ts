@@ -17,6 +17,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image("beamveilguardian", "assets/BeamveilGuardian.png");
     this.load.image("upshooter", "assets/UpShooter.png");
     this.load.image("ammocarrier", "assets/AmmoCarrier.png");
+    this.load.image("dronebot", "assets/DroneBot.png");
     this.load.svg('explosion', 'assets/explosion.svg');
   }
 

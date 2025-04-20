@@ -13,6 +13,7 @@ import { RipplePropeller } from "../objects/RipplePropeller";
 import { PulseShadow } from "../objects/PulseShadow";
 import { UpShooter } from "../objects/UpShooter";
 import { AmmoCarrier } from "../objects/AmmoCarrier";
+import { DroneBot } from "../objects/Dronebot";
 
 export class GameScene extends Phaser.Scene {
   player!: Player;
@@ -186,6 +187,7 @@ export class GameScene extends Phaser.Scene {
       { constructor: BeamveilGuardian, weight: 3, cost: 3 },
       { constructor: UpShooter, weight: 4, cost: 1 },
       { constructor: AmmoCarrier, weight: 2, cost: 2 },
+      { constructor: DroneBot, weight: 4, cost: 1 },
     ];
 
     const totalWeight = enemies.reduce((sum, enemy) => sum + enemy.weight, 0);
