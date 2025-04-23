@@ -56,7 +56,12 @@ const enemies = [
   { constructor: NewEnemy, weight: 4 },
 ];
 ```
-## 4. 示例
+
+## 4. 将新敌机加入 enemies.md
+
+在 `docs/enemies.md` 中添加新敌机的信息。
+
+## 5. 示例
 参考现有敌机实现：
 - `Vanguard`: 基础直线移动敌机
 - `MeteorFighter`: 快速突袭型敌机
