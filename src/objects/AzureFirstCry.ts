@@ -1,4 +1,3 @@
-// src/objects/Player.ts
 import Phaser from "phaser";
 import { Bullet } from "./Bullet";
 import { Player } from "./Player";

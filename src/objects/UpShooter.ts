@@ -1,4 +1,3 @@
-// src/objects/Enemy.ts
 import Phaser from "phaser";
 import { Enemy } from "./Enemy";
 

@@ -1,4 +1,3 @@
-// src/config/gameConfig.ts
 import Phaser from 'phaser';
 
 export interface GameConfig extends Phaser.Types.Core.GameConfig {

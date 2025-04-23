@@ -1,7 +1,6 @@
-// src/objects/Enemy.ts
 import Phaser from "phaser";
-import { Enemy } from "./Enemy";
 import { Bullet } from "./Bullet";
+import { Enemy } from "./Enemy";
 
 export class ArcShooter extends Enemy {
   name: string = "arcshooter";

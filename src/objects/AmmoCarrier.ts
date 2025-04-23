@@ -1,7 +1,6 @@
-// src/objects/AmmoCarrier.ts
 import Phaser from "phaser";
-import { Enemy } from "./Enemy";
 import { GameScene } from "../scenes/GameScene";
+import { Enemy } from "./Enemy";
 
 export class AmmoCarrier extends Enemy {
   name: string = "ammocarrier";

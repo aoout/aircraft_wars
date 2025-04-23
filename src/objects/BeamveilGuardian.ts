@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import { Enemy } from "./Enemy";
 import { Bullet } from "./Bullet";
+import { Enemy } from "./Enemy";
 
 export class BeamveilGuardian extends Enemy {
   name = "beamveilguardian";

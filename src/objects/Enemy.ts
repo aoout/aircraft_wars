@@ -1,8 +1,7 @@
-// src/objects/Enemy.ts
 import Phaser from "phaser";
-import { Emitter } from "./Emitter";
-import { Bullet } from "./Bullet";
 import { GameScene } from "../scenes/GameScene";
+import { Bullet } from "./Bullet";
+import { Emitter } from "./Emitter";
 
 export class Enemy extends Emitter {
   name: string = "";

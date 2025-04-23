@@ -1,9 +1,8 @@
-// src/objects/PulseShadow.ts
 import Phaser from "phaser";
 import { Bullet } from "./Bullet";
-import { Player } from "./Player";
 import { Enemy } from "./Enemy";
 import { GuidedMissile } from "./GuidedMissile";
+import { Player } from "./Player";
 
 export class PulseShadow extends Player {
   name: string = "pulseshadow";

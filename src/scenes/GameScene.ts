@@ -1,34 +1,33 @@
-// src/scenes/GameScene.ts
 import Phaser from "phaser";
-import { Player } from "../objects/Player";
-import { Enemy } from "../objects/Enemy";
-import { Bullet } from "../objects/Bullet";
-import { Object } from "../objects/Object";
-import { Vanguard } from "../objects/Vanguard";
-import { MeteorFighter } from "../objects/MeteorFighter";
-import { ArcShooter } from "../objects/ArcShooter";
-import { BeamveilGuardian } from "../objects/BeamveilGuardian";
-import { AzureFirstCry } from "../objects/AzureFirstCry";
-import { RipplePropeller } from "../objects/RipplePropeller";
-import { PulseShadow } from "../objects/PulseShadow";
-import { UpShooter } from "../objects/UpShooter";
 import { AmmoCarrier } from "../objects/AmmoCarrier";
+import { ArcShooter } from "../objects/ArcShooter";
+import { AzureFirstCry } from "../objects/AzureFirstCry";
+import { BeamveilGuardian } from "../objects/BeamveilGuardian";
+import { Bullet } from "../objects/Bullet";
 import { DroneBot } from "../objects/Dronebot";
+import { Enemy } from "../objects/Enemy";
+import { MeteorFighter } from "../objects/MeteorFighter";
+import { Object } from "../objects/Object";
+import { Player } from "../objects/Player";
+import { PulseShadow } from "../objects/PulseShadow";
+import { RipplePropeller } from "../objects/RipplePropeller";
+import { UpShooter } from "../objects/UpShooter";
+import { Vanguard } from "../objects/Vanguard";
 
 export class GameScene extends Phaser.Scene {
-  private player!: Player;
-  private enemies: Enemy[] = [];
-  private enemies_bullets: Bullet[] = [];
-  private spawnTimer: number = 0;
-  private pointsPerSecond: number = 1;
-  private basePointsPerSecond: number = 1;
-  private currentPoints: number = 0;
-  private currentIntent: { constructor: typeof Enemy; cost: number } | null = null;
-  private gameTime: number = 0;
-  private score: number = 0;
-  private scoreText!: Phaser.GameObjects.Text;
-  private lastEnemyPassTime: number = 0;
-  private playerType: string = "azurefirstcry";
+  player!: Player;
+  enemies: Enemy[] = [];
+  enemies_bullets: Bullet[] = [];
+  spawnTimer: number = 0;
+  pointsPerSecond: number = 1;
+  basePointsPerSecond: number = 1;
+  currentPoints: number = 0;
+  currentIntent: { constructor: typeof Enemy; cost: number } | null = null;
+  gameTime: number = 0;
+  score: number = 0;
+  scoreText!: Phaser.GameObjects.Text;
+  lastEnemyPassTime: number = 0;
+  playerType: string = "azurefirstcry";
 
   static gameOver: boolean = false;
 
@@ -57,7 +56,7 @@ export class GameScene extends Phaser.Scene {
     this.updateEnemySpawning();
   }
 
-  private initializeGameState(): void {
+  initializeGameState(): void {
     GameScene.gameOver = false;
     this.spawnTimer = 0;
     this.gameTime = 0;
@@ -69,7 +68,7 @@ export class GameScene extends Phaser.Scene {
     this.currentIntent = null;
   }
 
-  private createPlayer(): void {
+  createPlayer(): void {
     const playerConstructors = {
       ripplepropeller: RipplePropeller,
       pulseshadow: PulseShadow,
@@ -79,7 +78,7 @@ export class GameScene extends Phaser.Scene {
     this.player = new PlayerConstructor(this, 400, 500);
   }
 
-  private createScoreDisplay(): void {
+  createScoreDisplay(): void {
     this.scoreText = this.add.text(50, 50, "分数: 0", {
       fontFamily: "微软雅黑",
       fontSize: "24px",
@@ -88,7 +87,7 @@ export class GameScene extends Phaser.Scene {
     this.scoreText.setDepth(1);
   }
 
-  private setupEventListeners(): void {
+  setupEventListeners(): void {
     this.events.on("breakthrough", this.handleBreakthrough, this);
     this.events.on("player_Destroyed", this.handlePlayerDestroyed, this);
     this.events.on("enemy_Destroyed", this.handleEnemyDestroyed, this);
@@ -96,31 +95,31 @@ export class GameScene extends Phaser.Scene {
     this.events.on("bullet_Destroyed", this.handleBulletDestroyed, this);
   }
 
-  private handleBreakthrough(): void {
+  handleBreakthrough(): void {
     this.lastEnemyPassTime = 0;
   }
 
-  private handlePlayerDestroyed(): void {
+  handlePlayerDestroyed(): void {
     GameScene.gameOver = true;
     this.cleanupGameObjects();
     this.removeEventListeners();
     this.startGameOverScene();
   }
 
-  private cleanupGameObjects(): void {
+  cleanupGameObjects(): void {
     this.player.bullets.slice().forEach(bullet => bullet.destroy());
     this.enemies.slice().forEach(enemy => enemy.destroy());
     this.enemies_bullets.slice().forEach(bullet => bullet.destroy());
   }
 
-  private removeEventListeners(): void {
+  removeEventListeners(): void {
     this.events.removeListener("player_Destroyed");
     this.events.removeListener("enemy_Destroyed");
     this.events.removeListener("enemyShoot");
     this.events.removeListener("bullet_Destroyed");
   }
 
-  private startGameOverScene(): void {
+  startGameOverScene(): void {
     this.scene.start("GameOverScene", {
       score: this.score,
       playerType: this.playerType,
@@ -128,7 +127,7 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private handleEnemyDestroyed(enemy: Enemy): void {
+  handleEnemyDestroyed(enemy: Enemy): void {
     this.enemies.splice(this.enemies.indexOf(enemy), 1);
     if (enemy.health > 0) return;
     
@@ -137,7 +136,7 @@ export class GameScene extends Phaser.Scene {
     this.scoreText.setText(`分数: ${this.score}`);
   }
 
-  private updateScore(enemy: Enemy): void {
+  updateScore(enemy: Enemy): void {
     const scoreMap = new Map([
       [Vanguard, 10],
       [MeteorFighter, 20],
@@ -147,11 +146,11 @@ export class GameScene extends Phaser.Scene {
     this.score += scoreMap.get(enemy.constructor as any) || 0;
   }
 
-  private handleEnemyShoot(bullet: Bullet): void {
+  handleEnemyShoot(bullet: Bullet): void {
     this.enemies_bullets.push(bullet);
   }
 
-  private handleBulletDestroyed(bullet: Bullet): void {
+  handleBulletDestroyed(bullet: Bullet): void {
     const bulletType = bullet.getData("type");
     if (bulletType === "player_bullet") {
       this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
@@ -160,11 +159,11 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private setupCollisionDetection(): void {
+  setupCollisionDetection(): void {
     this.matter.world.on("collisionstart", this.handleCollision, this);
   }
 
-  private handleCollision(event: Phaser.Physics.Matter.Events.CollisionStartEvent): void {
+  handleCollision(event: Phaser.Physics.Matter.Events.CollisionStartEvent): void {
     event.pairs.forEach(pair => {
       const objA = pair.bodyA.gameObject as Object;
       const objB = pair.bodyB.gameObject as Object;
@@ -179,7 +178,7 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private processCollision(key: string, objA: Object, objB: Object): void {
+  processCollision(key: string, objA: Object, objB: Object): void {
     const collisionPairs = new Map([
       ["player_bullet,enemy", [objA, objB]],
       ["enemy,player_bullet", [objB, objA]],
@@ -196,7 +195,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private updateShieldTimer(delta: number): void {
+  updateShieldTimer(delta: number): void {
     this.lastEnemyPassTime += delta;
     if (this.lastEnemyPassTime >= 15000) {
       this.player.addShield();
@@ -204,20 +203,20 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private updateGameObjects(): void {
+  updateGameObjects(): void {
     this.player.update();
     this.enemies.slice().forEach(enemy => enemy.update());
     this.player.bullets.slice().forEach(bullet => bullet.update());
     this.enemies_bullets.slice().forEach(bullet => bullet.update());
   }
 
-  private updateGameTime(delta: number): void {
+  updateGameTime(delta: number): void {
     this.gameTime += delta;
     this.pointsPerSecond = this.basePointsPerSecond * Math.pow(1.1, Math.floor(this.gameTime / 30000));
     this.currentPoints += (this.pointsPerSecond * delta) / 1000;
   }
 
-  private updateEnemySpawning(): void {
+  updateEnemySpawning(): void {
     if (!this.currentIntent) {
       this.generateIntent();
     } else if (this.currentPoints >= this.currentIntent.cost) {
@@ -227,7 +226,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private generateIntent(): void {
+  generateIntent(): void {
     const enemies = [
       { constructor: Vanguard, weight: 8, cost: 1 },
       { constructor: MeteorFighter, weight: 3, cost: 2 },
@@ -254,7 +253,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private spawnEnemy(): void {
+  spawnEnemy(): void {
     if (!this.currentIntent) return;
 
     const width = this.cameras.main.width;

@@ -1,4 +1,3 @@
-// src/objects/Bullet.ts
 import Phaser from "phaser";
 import { Object } from "./Object";
 

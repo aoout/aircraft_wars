@@ -1,4 +1,3 @@
-// src/objects/GuidedMissile.ts
 import Phaser from "phaser";
 import { Bullet } from "./Bullet";
 import { Enemy } from "./Enemy";

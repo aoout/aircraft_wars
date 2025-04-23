@@ -1,4 +1,3 @@
-// src/scenes/BootScene.ts
 import Phaser from "phaser";
 
 export class BootScene extends Phaser.Scene {
